@@ -1,0 +1,132 @@
+for a queue in a list of queues:
+    queue with min priority = running queue 
+    if queues time slice is finished:
+        go to lower priority with extended time sliced
+    for queue with min priority and has a process 
+        #fulfill for time slice 
+        #if not finised 
+            #   take this process off list
+            # put it on lower priority queue  
+
+    if process blocked by I/O:
+        return to ready state 
+        priority increases by putting in queue with higher priority 
+    
+    when queue is empty 
+        repeat this function for next highest priority
+    
+    if all queues empty, go into idle state 
+
+
+what i have done 
+
+1) if its time slice is finihed, its state = terminate, pops off from queue 
+2) if quantum not finished go to lower priority queue 
+3) made it wrap around if out of index
+4) goes into idle state when all queues empty 
+
+
+my issues 
+
+1) when i reach last queue, i stop, even if there are more processes in queue--> i could run the schedular again 
+2) i wrap around the queue --> i dont know if this is correct, do i just leave them in the last queue?
+3) get quantum maths correct and queue timing 
+
+
+
+
+my assumptions
+queues going in order --> first position is of highest priority
+processes going in order too 
+keep calling schedular until in idle state, then if a process is added, it will go out of idle state 
+    the assumption here is that the schedular keeps getting called, doesnt keep going until all queues empty like a normal schedular
+
+
+all thats left is
+input and output interrupts 
+clean up the maths 
+do otner tasks 
+
+# handling interrupts
+    def blockedProcess(self):
+        self._processState = "Blocked"
+        self._quantum = 0
+        self._blocked.append(self)
+        print("Process ", self._processNo, " has been blocked for ", self._execDuration)
+        time.sleep(self._execDuration)
+        self._processState = "Ready"
+        self._blocked.remove(self)
+        self._ioOps = False
+        if self._priorityLevel != 0:
+            self._priorityLevel -= 1
+        else:
+            self._priorityLevel = 0
+        print("Process ", self._processNo, " has been switched to Ready state.")
+        print("New priority: %i" % self._priorityLevel)
+        ready.append(self)
+
+
+big issue its restarting at q0 --> maybe not
+
+
+
+
+
+
+
+okay so there are issues but booba is tired and needs to get this done so 
+im going to finish the maths --> must do part 1 first
+do part 1 
+do part 2 
+do part 4 
+
+finish the whole report and submit and dont look back 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+low priority 
+
+
+low prority and high priority ]
+
+high priority
+
+high poriority to low priority
+
+idle 
+
+
+8 queues 
+class queue, instance of 
+
+class queue 
+process 
+
+class process 
+
+
+main 
+queue 
+
+
+8 queues 
+processes 
+process have process id with different priority and fixed time slice 
+processes will be ready or blocked --> hardcode 
+if they are ready execute --? just run a change state method 
+not finihed excuting while time slice, priority goes up 
+if a process is blocked because of i/o interupption priority level is brought up 
